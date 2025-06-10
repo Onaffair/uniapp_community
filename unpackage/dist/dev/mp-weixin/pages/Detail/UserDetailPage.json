@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "用户详情",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "head": "../../components/Head/Head",
+    "activity-card": "../../components/ActivityCard/ActivityCard",
+    "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons"
+  }
+}

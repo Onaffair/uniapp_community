@@ -1,0 +1,106 @@
+
+.form-item.data-v-bb8495f6 {
+    display: flex;
+    padding: 24rpx;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+.form-label.data-v-bb8495f6 {
+    display: flex;
+    align-items: center;
+    width: 35%;
+}
+.form-content.data-v-bb8495f6 {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.custom-title.data-v-bb8495f6 {
+    font-size: 30rpx;
+    font-weight: bold;
+    margin-left: 12rpx;
+}
+.custom-value.data-v-bb8495f6 {
+    font-size: 28rpx;
+    color: #666;
+    margin-right: 12rpx;
+}
+.highlight-text.data-v-bb8495f6 {
+    color: #ffb04f;
+}
+.optional.data-v-bb8495f6 {
+    color: #999;
+}
+.custom-input.data-v-bb8495f6 {
+    text-align: right;
+    font-size: 28rpx;
+    height: 60rpx;
+    width: 100%;
+}
+.image-upload.data-v-bb8495f6 {
+    width: 100%;
+    padding: 20rpx 0;
+}
+.rule.data-v-bb8495f6 {
+    color: #9acd32;
+    display: flex;
+    margin-top: 80rpx;
+    justify-content: center;
+    font-size: 30rpx;
+}
+.btn-submit.data-v-bb8495f6 {
+    display: flex;
+    justify-content: center;
+    margin-top: 40rpx;
+    margin-bottom: 60rpx;
+}
+.btn-submit button.data-v-bb8495f6 {
+    width: 400rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-radius: 40rpx;
+    background-color: #ffb04f;
+    color: white;
+    font-size: 32rpx;
+}
+.btn-submit button[disabled].data-v-bb8495f6 {
+    background-color: #b5b5b5;
+}
+
+/* 选择器样式 */
+.picker-container.data-v-bb8495f6 {
+    background-color: #fff;
+    width: 100%;
+}
+.picker-header.data-v-bb8495f6 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90rpx;
+    padding: 0 30rpx;
+    border-bottom: 1px solid #eee;
+}
+.cancel-btn.data-v-bb8495f6, .confirm-btn.data-v-bb8495f6 {
+    font-size: 28rpx;
+    padding: 10rpx;
+}
+.cancel-btn.data-v-bb8495f6 {
+    color: #999;
+}
+.confirm-btn.data-v-bb8495f6 {
+    color: #ffb04f;
+}
+.title.data-v-bb8495f6 {
+    font-size: 30rpx;
+    font-weight: bold;
+}
+.picker-body.data-v-bb8495f6 {
+    width: 100%;
+    height: 500rpx;
+}
+.picker-item.data-v-bb8495f6 {
+    line-height: 70rpx;
+    text-align: center;
+    font-size: 28rpx;
+}

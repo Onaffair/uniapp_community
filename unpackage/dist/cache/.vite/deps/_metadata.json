@@ -1,0 +1,49 @@
+{
+  "hash": "e47c26d7",
+  "configHash": "f5807a53",
+  "lockfileHash": "cf6e636e",
+  "browserHash": "37d2603d",
+  "optimized": {
+    "pinia-plugin-persistedstate": {
+      "src": "../../../../../node_modules/pinia-plugin-persistedstate/dist/index.js",
+      "file": "pinia-plugin-persistedstate.js",
+      "fileHash": "572d459e",
+      "needsInterop": false
+    },
+    "dayjs": {
+      "src": "../../../../../node_modules/dayjs/dayjs.min.js",
+      "file": "dayjs.js",
+      "fileHash": "963b7359",
+      "needsInterop": true
+    },
+    "crypto-js": {
+      "src": "../../../../../node_modules/crypto-js/index.js",
+      "file": "crypto-js.js",
+      "fileHash": "139ae798",
+      "needsInterop": true
+    },
+    "ali-oss": {
+      "src": "../../../../../node_modules/ali-oss/dist/aliyun-oss-sdk.js",
+      "file": "ali-oss.js",
+      "fileHash": "daf4fe21",
+      "needsInterop": true
+    },
+    "dompurify": {
+      "src": "../../../../../node_modules/dompurify/dist/purify.es.mjs",
+      "file": "dompurify.js",
+      "fileHash": "5c90acc0",
+      "needsInterop": false
+    },
+    "marked": {
+      "src": "../../../../../node_modules/marked/lib/marked.esm.js",
+      "file": "marked.js",
+      "fileHash": "5bd16ec0",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-NEAGQJHQ": {
+      "file": "chunk-NEAGQJHQ.js"
+    }
+  }
+}

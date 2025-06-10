@@ -1,0 +1,91 @@
+
+/* 容器 */
+.comment-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40rpx;
+}
+.comment-container {
+    width: 90%;
+    background: #fff;
+    padding: 30rpx;
+    border-radius: 20rpx;
+    box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 头像 & 输入框 */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20rpx;
+}
+.user-avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    margin-right: 20rpx;
+}
+.comment-input {
+    flex: 1;
+    padding: 20rpx;
+    border: 1px solid #ddd;
+    border-radius: 10rpx;
+    font-size: 28rpx;
+}
+
+/* 评分 */
+.rating {
+    display: flex;
+    margin: 20rpx 0;
+}
+.star {
+    font-size: 40rpx;
+    color: lightgray;
+    margin-right: 10rpx;
+}
+.filled {
+    color: gold;
+}
+
+/* 引用内容 */
+.quote {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 16rpx;
+    border-left: 8rpx solid #1989fa;
+    font-size: 28rpx;
+    color: #555;
+    margin-bottom: 30rpx;
+    border-radius: 10rpx;
+}
+.quote-content {
+    display: flex;
+    align-items: center;
+}
+.quote-close {
+    font-size: 36rpx;
+    color: #999;
+}
+.quote-icon {
+    margin-right: 10rpx;
+}
+
+/* 上传图片 */
+.upload-section {
+    display: flex;
+    align-items: center;
+}
+
+/* 发布按钮 */
+.submit-button {
+    margin-top: 40rpx;
+    width: 100%;
+    padding: 16rpx;
+    background: #1989fa;
+    color: white;
+    border: none;
+    border-radius: 10rpx;
+    font-size: 32rpx;
+}

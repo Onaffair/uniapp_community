@@ -1,0 +1,57 @@
+
+.container.data-v-5e0526b7 {
+    padding: 5px 0;
+}
+.img-Container.data-v-5e0526b7 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+}
+.image-wrapper.data-v-5e0526b7 {
+    position: relative;
+    flex: 1 1 80px;
+    max-width: 80px;
+    aspect-ratio: 1;
+}
+.preview-image.data-v-5e0526b7 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+.delete-btn.data-v-5e0526b7 {
+    position: absolute;
+    right: -6px;
+    top: -6px;
+    width: 20px;
+    height: 20px;
+    background: #ff4444;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+.delete-btn.data-v-5e0526b7:hover {
+    transform: scale(1.1);
+    background: #ff0000;
+}
+.upload-button.data-v-5e0526b7 {
+    width: 80px;
+    height: 80px;
+    border: 1px dashed #dcdee2;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7f7f7;
+}
+.upload-icon.data-v-5e0526b7 {
+    font-size: 28px;
+    color: #999;
+}

@@ -1,0 +1,1 @@
+<view><head-top wx:if="{{a}}" u-i="7d6eef8a-0" bind:__l="__l" u-p="{{a}}"/><view wx:if="{{b}}"><user-card wx:for="{{c}}" wx:for-item="user" wx:key="a" u-i="{{user.b}}" bind:__l="__l" u-p="{{user.c}}"/></view><view wx:else class="empty-container"><image src="{{d}}" mode="aspectFit" class="empty-image"></image><text class="empty-text">暂无粉丝</text></view></view>

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "活动详情",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "head": "../../components/Head/Head",
+    "uni-tag": "../../uni_modules/uni-tag/components/uni-tag/uni-tag",
+    "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "uni-card": "../../uni_modules/uni-card/components/uni-card/uni-card",
+    "comment": "../../components/Comment/Comment",
+    "write-comment": "../../components/WriteComment/WriteComment"
+  }
+}

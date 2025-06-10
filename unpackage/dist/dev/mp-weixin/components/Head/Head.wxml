@@ -1,0 +1,1 @@
+<view class="header"><view wx:if="{{a}}" class="nav-left" bindtap="{{b}}"><text class="iconfont icon-left-arrow"> 返回 </text></view><view wx:if="{{c}}" class="header-tit ellipsis">{{d}}</view><view class="nav-right"><slot name="right"></slot></view></view>

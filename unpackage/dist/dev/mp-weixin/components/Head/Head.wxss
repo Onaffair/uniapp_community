@@ -1,0 +1,30 @@
+
+.header {
+  width: 100%;
+  position: relative;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  background: #ffffff;
+}
+.nav-left {
+  position: absolute;
+  bottom: 0;
+  font-size: 28rpx;
+  left: 32rpx;
+}
+.header-tit {
+  max-width: 60%;
+  margin: 0 auto;
+  color: #323233;
+  font-weight: 500;
+  font-size: 40rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.nav-right {
+  position: absolute;
+  bottom: 0;
+  right: 32rpx;
+}

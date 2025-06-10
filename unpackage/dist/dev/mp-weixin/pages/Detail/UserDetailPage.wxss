@@ -1,0 +1,110 @@
+
+.user-profile.data-v-bd14ade0 {
+    padding: 32rpx;
+    background: #f7f8fa;
+    min-height: 100vh;
+}
+.user-header.data-v-bd14ade0 {
+    background: white;
+    padding: 32rpx;
+    border-radius: 24rpx;
+    margin-bottom: 32rpx;
+}
+.avatar-section.data-v-bd14ade0 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32rpx;
+}
+.user-avatar.data-v-bd14ade0 {
+    width: 160rpx;
+    height: 160rpx;
+    border-radius: 80rpx;
+}
+.user-meta.data-v-bd14ade0 {
+    margin-left: 32rpx;
+}
+.username.data-v-bd14ade0 {
+    display: block;
+    margin: 0;
+    font-size: 36rpx;
+    font-weight: bold;
+}
+.account.data-v-bd14ade0 {
+    display: block;
+    margin: 8rpx 0 0;
+    color: #969799;
+    font-size: 28rpx;
+}
+.stats-section.data-v-bd14ade0 {
+    display: flex;
+    gap: 48rpx;
+    margin: 32rpx 0;
+}
+.stat-item.data-v-bd14ade0 {
+    text-align: center;
+}
+.stat-number.data-v-bd14ade0 {
+    display: block;
+    font-size: 32rpx;
+    font-weight: 500;
+}
+.stat-label.data-v-bd14ade0 {
+    display: block;
+    font-size: 24rpx;
+    color: #969799;
+}
+.action-buttons.data-v-bd14ade0 {
+    display: flex;
+    margin-top: 20rpx;
+}
+.follow-btn.data-v-bd14ade0, .add-friend-btn.data-v-bd14ade0 {
+    height: 70rpx;
+    line-height: 70rpx;
+    font-size: 28rpx;
+    border-radius: 35rpx;
+}
+.follow-btn.data-v-bd14ade0 {
+    width: 30%;
+    margin-right: 20rpx;
+}
+.follow.data-v-bd14ade0 {
+    background-color: #007aff;
+    color: #ffffff;
+}
+.followed.data-v-bd14ade0 {
+    background-color: #f2f2f2;
+    color: #333333;
+}
+.add-friend-btn.data-v-bd14ade0 {
+    flex: 1;
+    background-color: #4cd964;
+    color: #ffffff;
+}
+.add-friend-btn[disabled].data-v-bd14ade0 {
+    background-color: #f2f2f2;
+    color: #999999;
+}
+.section-title.data-v-bd14ade0 {
+    display: block;
+    margin: 32rpx 0;
+    font-size: 32rpx;
+    font-weight: 500;
+    color: #323233;
+}
+.activity-list.data-v-bd14ade0 {
+    background: white;
+    border-radius: 24rpx;
+    padding: 32rpx;
+}
+.empty-content.data-v-bd14ade0 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60rpx 0;
+}
+.empty-text.data-v-bd14ade0 {
+    margin-top: 20rpx;
+    color: #999;
+    font-size: 28rpx;
+}

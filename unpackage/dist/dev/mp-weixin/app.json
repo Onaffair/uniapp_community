@@ -1,0 +1,71 @@
+{
+  "pages": [
+    "pages/Home/Home",
+    "pages/Index/Index",
+    "pages/Register/Register",
+    "pages/Detail/ActivityDetailPage",
+    "pages/Detail/UserDetailPage",
+    "pages/launchActivity/LaunchActivity",
+    "pages/launchActivity/ActivityContent",
+    "pages/launchActivity/ActivityPeopleNum",
+    "pages/launchActivity/ActivityPosition",
+    "pages/launchActivity/ActivityTime",
+    "pages/Chat/MyChat",
+    "pages/Home/Activity",
+    "pages/PersonalCenter/PersonalCenter",
+    "pages/Chat/ChatRoom",
+    "pages/Chat/GroupChatRoom",
+    "pages/PersonalCenter/MyFan",
+    "pages/PersonalCenter/MyFollow",
+    "pages/PersonalCenter/SystemInfo",
+    "pages/Chat/AIChat"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "活动管理",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#1989fa",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/Home/Home",
+        "iconPath": "static/images/tabIcon/home.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/Chat/MyChat",
+        "iconPath": "static/images/tabIcon/chat.png",
+        "text": "聊天"
+      },
+      {
+        "pagePath": "pages/Home/Activity",
+        "iconPath": "static/images/tabIcon/activity.png",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/PersonalCenter/PersonalCenter",
+        "iconPath": "static/images/tabIcon/personalCenter.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userInfo": {
+      "desc": "用于完善用户资料"
+    },
+    "scope.userLocation": {
+      "desc": "用于显示活动位置"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseLocation"
+  ],
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {}
+}

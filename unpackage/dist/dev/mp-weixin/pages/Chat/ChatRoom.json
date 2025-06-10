@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "聊天详情",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "img-uploader": "../../components/ImgUploader/ImgUploader",
+    "head-top": "../../components/Head/Head",
+    "chat-message": "../../components/ChatMessage/ChatMessage"
+  }
+}

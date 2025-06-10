@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "活动时间",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "head": "../../components/Head/Head",
+    "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "uni-forms-item": "../../uni_modules/uni-forms/components/uni-forms-item/uni-forms-item",
+    "uni-forms": "../../uni_modules/uni-forms/components/uni-forms/uni-forms",
+    "uni-datetime-picker": "../../uni_modules/uni-datetime-picker/components/uni-datetime-picker/uni-datetime-picker"
+  }
+}
