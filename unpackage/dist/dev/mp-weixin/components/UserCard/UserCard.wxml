@@ -1,1 +1,0 @@
-<view class="user-card"><image class="avatar" src="{{a}}" mode="aspectFill" bindtap="{{b}}"/><view class="user-info" bindtap="{{g}}"><text class="name">{{c}}</text><text class="{{['status', e && 'online', f && 'offline']}}">{{d}}</text></view><button wx:if="{{h}}" type="primary" size="mini" class="action-btn" bindtap="{{j}}">{{i}}</button></view>

@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "系统消息",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "friend-request": "../../components/FriendRequest/FriendRequest",
-    "head-top": "../../components/Head/Head"
-  }
-}

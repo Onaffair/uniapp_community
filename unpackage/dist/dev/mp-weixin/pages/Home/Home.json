@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "首页",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "activity-card": "../../components/ActivityCard/ActivityCard"
-  }
-}
