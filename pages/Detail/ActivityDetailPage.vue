@@ -86,8 +86,8 @@
         <!-- 底部操作栏 -->
         <view class="action-bar">
             <view class="action-bar-content">
-                <text class="icon-share" @click="generateShareContent">
-                    <uni-icons type="redo" size="24"/>
+                <text class="icon-report" @click="openReportModal">
+                    <uni-icons type="help" size="24"/>
                 </text>
                 <button
                     class="action-button"
@@ -100,6 +100,13 @@
                 </button>
             </view>
         </view>
+        
+        <!-- 举报弹窗 -->
+        <ReportModal 
+            ref="reportModal"
+            :activity-id="props.id"
+            @report-success="onReportSuccess"
+        />
     </view>
 </template>
 
@@ -129,6 +136,9 @@ const locationCoords = ref({
 const { activityStatusList, categoryList } = useActivityStore()
 const userStore = useUserStore()
 const { myActivity, userDetail } = userStore
+
+// 举报弹窗引用
+const reportModal = ref()
 
 // 计算属性
 const categoryName = computed(() => categoryList.find(item => item.id === activityInfo.value.activity?.categoryId)?.name || '其他')
@@ -324,6 +334,27 @@ const goToUserDetail = (userId) => {
     })
 }
 
+// 打开举报弹窗
+const openReportModal = () => {
+    if (!userDetail?.account) {
+        uni.showToast({
+            title: '请先登录',
+            icon: 'none'
+        })
+        return
+    }
+    reportModal.value?.openModal()
+}
+
+// 举报成功回调
+const onReportSuccess = () => {
+    uni.showToast({
+        title: '举报已提交，我们会尽快处理',
+        icon: 'success',
+        duration: 2000
+    })
+}
+
 // 初始化加载数据
 onMounted(() => {
     refreshActivityInfo()
@@ -398,9 +429,10 @@ onMounted(() => {
     justify-content: space-between;
 }
 
-.icon-share {
+.icon-report {
     margin: 0 auto;
     padding: 0 30rpx;
+    color: #ff4757;
 }
 
 .action-button {
@@ -436,4 +468,4 @@ onMounted(() => {
     padding: 0 24rpx;
     margin-bottom: 100rpx;
 }
-</style> 
+</style>

@@ -39,6 +39,7 @@ import Dashboard from './Dashboard.vue'
 import Users from './Users.vue'
 import Activities from './Activities.vue'
 import Groups from './Groups.vue'
+import ReportManagePage from './ReportManagePage.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -48,7 +49,8 @@ const menuItems = [
     { name: '控制台', component: 'Dashboard' },
     { name: '用户管理', component: 'Users' },
     { name: '活动管理', component: 'Activities' },
-    { name: '群组管理', component: 'Groups' }
+    { name: '群组管理', component: 'Groups' },
+    { name: '举报管理', component: 'ReportManagePage' }
 ]
 
 // 当前显示的组件
@@ -59,7 +61,8 @@ const switchPage = (component) => {
     currentComponent.value = component === 'Dashboard' ? Dashboard :
                             component === 'Users' ? Users :
                             component === 'Activities' ? Activities :
-                            component === 'Groups' ? Groups : null
+                            component === 'Groups' ? Groups :
+                            component === 'ReportManagePage' ? ReportManagePage : null
 }
 
 // 退出登录

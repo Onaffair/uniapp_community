@@ -220,12 +220,6 @@ const submit = async () => {
                 duration: 2000
             });
 
-            // 登录成功后跳转到首页
-            setTimeout(() => {
-                uni.switchTab({
-                    url: '/pages/Home/Home'
-                });
-            }, 2000);
         }
     } catch (error) {
         uni.hideLoading();

@@ -475,6 +475,38 @@ export const getSessionChatHistory = async (sessionId) =>{
 
 }
 
+/**
+ * 获取举报类型列表
+ * @returns {Promise} - 返回举报类型列表
+ */
+export const getReportTypes = async () => {
+    try {
+        let res = await request.get('/report/types');
+        return res?.data;
+    } catch (e) {
+        alertFail(getReportTypes.name, e?.message);
+    }
+};
+
+/**
+ * 提交举报
+ * @param {Object} data - 举报数据
+ * @param {number} data.activityId - 活动ID
+ * @param {string} data.reporter - 举报人账号
+ * @param {string} data.reportType - 举报类型
+ * @param {string} data.description - 举报描述
+ * @param {Array} data.evidenceImages - 证据图片列表
+ * @returns {Promise} - 返回提交结果
+ */
+export const submitReport = async (data) => {
+    try {
+        let res = await request.post('/report/submit', data);
+        return res?.data;
+    } catch (e) {
+        alertFail(submitReport.name, e?.message);
+    }
+};
+
 
 
 

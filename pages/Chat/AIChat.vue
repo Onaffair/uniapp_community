@@ -73,7 +73,7 @@
                 </view>
             </view>
             <!-- 活动选择弹窗 -->
-            <uni-popup ref="popup" type="bottom">
+            <uni-popup ref="popup" type="bottom" style="z-index: 1000">
                 <view class="popup-content">
                     <view class="popup-header">
                         <text class="popup-title">选择活动</text>
@@ -104,6 +104,7 @@ import { useUserStore } from "@/store/userStore";
 import DOMPurify from 'dompurify'
 import { marked } from "marked";
 import {getMyAISessionHistory, getSessionChatHistory} from "@/api";
+import {onShow} from '@dcloudio/uni-app'
 
 marked.setOptions({
 	gfm: true,
@@ -115,6 +116,14 @@ const userStore = useUserStore()
 const userInfo = ref(userStore.getUser())
 const activities = userStore.getMyActivity()
 const mySession = computed(() => userStore.getMyAIChatSession())
+
+// 页面显示时获取数据
+onShow(() => {
+    if (userStore.getIsLogin()) {
+        // 获取AI会话历史
+        getMyAISessionHistory()
+    }
+})
 
 
 const chatRequest = reactive({

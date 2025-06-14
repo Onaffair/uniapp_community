@@ -146,6 +146,20 @@
         "navigationBarTitleText": "管理员登录",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/admin/ReportManagePage",
+      "style": {
+        "navigationBarTitleText": "举报管理",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/admin/ReportDetailPage",
+      "style": {
+        "navigationBarTitleText": "举报详情",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "tabBar": {

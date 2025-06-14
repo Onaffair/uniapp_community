@@ -6,7 +6,7 @@
                 v-for="user in following"
                 :key="user.account"
                 :user="user"
-                btn-text="取关"
+                :btn_text="'取关'"
                 @btn-click="unfollowUser"
             />
         </view>
@@ -19,6 +19,7 @@
 
 <script setup>
 import {computed} from 'vue';
+import {onShow} from '@dcloudio/uni-app'
 import UserCard from "@/components/UserCard/UserCard.vue";
 import HeadTop from "@/components/Head/Head.vue";
 import {useUserStore} from "@/store/userStore";
@@ -26,6 +27,18 @@ import {getFollowList, unfollow} from "@/api/userAPI";
 
 const userStore = useUserStore();
 const following = computed(() => userStore.getFollowData()?.following || []);
+
+// 页面显示时获取数据
+onShow(() => {
+    if (userStore.getIsLogin()) {
+        // 获取关注列表
+        getFollowList().then(res => {
+            if (res?.data) {
+                userStore.setFollowData(res.data)
+            }
+        })
+    }
+})
 
 const unfollowUser = async (userId) => {
     try {
@@ -73,4 +86,4 @@ const unfollowUser = async (userId) => {
     font-size: 28rpx;
     color: #999;
 }
-</style> 
+</style>

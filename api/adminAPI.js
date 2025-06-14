@@ -162,4 +162,56 @@ export const deleteGroupMember = async (groupId, userAccount) => {
         console.error('deleteGroupMember error:', e);
         throw e;
     }
-}; 
+};
+
+/**
+ * 获取举报列表（管理员功能）
+ * @param {Object} params - 查询参数
+ * @param {number} params.current - 当前页
+ * @param {number} params.size - 每页大小
+ * @param {string} params.status - 举报状态（可选）
+ * @returns {Promise} - 返回举报列表
+ */
+export const getReportList = async (params) => {
+    try {
+        let res = await request.get('/report/list', params);
+        return res?.data;
+    } catch (e) {
+        console.error('getReportList error:', e);
+        throw e;
+    }
+};
+
+/**
+ * 获取举报详情（管理员功能）
+ * @param {number} reportId - 举报ID
+ * @returns {Promise} - 返回举报详情
+ */
+export const getReportDetail = async (reportId) => {
+    try {
+        let res = await request.get(`/report/detail/${reportId}`);
+        return res?.data;
+    } catch (e) {
+        console.error('getReportDetail error:', e);
+        throw e;
+    }
+};
+
+/**
+ * 处理举报（管理员功能）
+ * @param {Object} data - 处理数据
+ * @param {number} data.reportId - 举报ID
+ * @param {string} data.handlerAccount - 处理人账号
+ * @param {string} data.handleAction - 处理措施
+ * @param {string} data.handleComment - 处理备注
+ * @returns {Promise} - 返回处理结果
+ */
+export const handleReport = async (data) => {
+    try {
+        let res = await request.post('/report/handle', data);
+        return res?.data;
+    } catch (e) {
+        console.error('handleReport error:', e);
+        throw e;
+    }
+};

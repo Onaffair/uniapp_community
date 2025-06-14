@@ -138,11 +138,24 @@ import {ref, computed, watch} from 'vue';
 import {useUserStore} from '@/store/userStore';
 import {imgBaseUrl} from "@/util/basic-data";
 import HeadTop from "@/components/Head/Head.vue";
+import {getFriend, getMyGroup} from "@/api";
+import {onShow} from '@dcloudio/uni-app'
 
 const userStore = useUserStore();
 
 const searchQuery = ref('');
 const activeSections = ref(['friends', 'groups']); // 默认展开好友和群组
+
+// 页面显示时获取数据
+onShow(() => {
+    if (userStore.getIsLogin()) {
+        // 获取好友列表
+        getFriend()
+        
+        // 获取群组列表
+        getMyGroup()
+    }
+})
 
 // 获取好友列表和群组列表
 const friends = computed(() => userStore.getFriend());
@@ -346,4 +359,4 @@ watch(searchQuery, (newVal) => {
     color: #999;
     font-size: 28rpx;
 }
-</style> 
+</style>

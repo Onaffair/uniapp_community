@@ -69,8 +69,8 @@
                 <text class="cell-title">系统消息</text>
                 <text class="iconfont icon-arrow-right"></text>
             </view>
-            <view class="cell" @tap="navigateTo('/pages/PersonalCenter/SystemInfo')">
-                <text class="cell-title"> 家电报修 </text>
+            <view class="cell" @tap="navigateTo('/pages/admin/Index')" v-if="userStore.getUser().role === 1">
+                <text class="cell-title"> 我是管理员 </text>
                 <text class="iconfont icon-arrow-right"></text>
             </view>
             <!-- 退出登录 -->
@@ -81,16 +81,26 @@
 
 <script setup>
 import {ref, computed} from 'vue';
+import {onShow} from '@dcloudio/uni-app'
 import {useUserStore} from "@/store/userStore";
 import {storeToRefs} from "pinia";
 import {imgBaseUrl} from "@/util/basic-data";
 import ImgUploader from "@/components/ImgUploader/ImgUploader.vue";
 import Login from "@/components/Login/Login.vue";
 import {userEditInfo, userQuit, bindWechat, unbindWechat} from "@/api/userAPI";
+import {getFriendRequest} from "@/api";
 
 const userStore = useUserStore();
 // 登录状态
 const {userDetail, isLogin} = storeToRefs(userStore);
+
+// 页面显示时获取数据
+onShow(() => {
+    if (userStore.getIsLogin()) {
+        // 获取好友请求
+        getFriendRequest()
+    }
+})
 
 // 编辑信息
 const editInfo = computed(() => {
@@ -356,4 +366,4 @@ const toggleWechatBinding = () => {
 .binding-text.bound {
     color: #07c160;
 }
-</style> 
+</style>
