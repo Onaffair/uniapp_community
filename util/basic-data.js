@@ -2,7 +2,8 @@
 // 可根据实际环境配置不同的URL
 
 //26.131.212.33
-const baseUrl = "localhost"
+const baseUrl = "onaffair.website"
+const localUrl = "localhost"
 
 const wsUrl = `ws://${baseUrl}:9000/ws`
 const backUrl = `http://${baseUrl}:721/api`

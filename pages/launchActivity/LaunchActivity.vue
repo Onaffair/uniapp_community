@@ -149,7 +149,6 @@ import { useActivityStore } from '@/store/activityStore';
 import { storeToRefs } from 'pinia';
 import { imgBaseUrl } from '@/util/basic-data';
 import { launchActivity } from '@/api/activityAPI';
-import { createGroup } from '@/api/GroupApI';
 import ImgUploader from '@/components/ImgUploader/ImgUploader.vue';
 
 const activityStore = useActivityStore();
@@ -257,12 +256,10 @@ const submitData = async () => {
     try {
         const res = await launchActivity(activityStore.formData);
         if (res?.data) {
-            await createGroup(res.data);
             uni.showToast({
-                title: '发布成功',
+                title: '发布成功，请等待审核',
                 icon: 'success'
             });
-            // activityStore.clearFormData();
             uni.navigateBack();
         }
     } catch (error) {

@@ -1,22 +1,34 @@
 <!-- #ifdef H5 -->
 <template>
     <div class="activities-management">
-        <!-- 加载状态 -->
-        <div v-if="loading" class="loading-state">
-            加载中...
+        <!-- 导航标签页 -->
+        <div class="tab-navigation">
+            <div class="tab-item" :class="{ active: currentTab === 'management' }" @click="currentTab = 'management'">
+                活动管理
+            </div>
+            <div class="tab-item" :class="{ active: currentTab === 'review' }" @click="currentTab = 'review'">
+                活动审核
+            </div>
         </div>
 
-        <!-- 错误提示 -->
-        <div v-if="error" class="error-state">
-            {{ error }}
-        </div>
+        <!-- 活动管理页面 -->
+        <div v-if="currentTab === 'management'">
+            <!-- 加载状态 -->
+            <div v-if="loading" class="loading-state">
+                加载中...
+            </div>
 
-        <!-- 活动列表 -->
-        <template v-if="!loading && !error">
+            <!-- 错误提示 -->
+            <div v-if="error" class="error-state">
+                {{ error }}
+            </div>
+
+            <!-- 活动列表 -->
+            <template v-if="!loading && !error">
             <div class="action-bar">
                 <div class="search-box">
                     <input type="text" v-model="searchTerm" placeholder="搜索活动...">
-                    <button @click="searchActivities">搜索</button>
+                    <button @click="searchActivities" size="mini" style="height: 95%">搜索</button>
                 </div>
                 <div class="filters">
                     <select v-model="statusFilter" class="status-filter">
@@ -333,20 +345,263 @@
             </div>
         </div>
     </div>
+        
+        <!-- 活动审核页面 -->
+        <div v-if="currentTab === 'review'">
+            <!-- 加载状态 -->
+            <div v-if="reviewLoading" class="loading-state">
+                加载中...
+            </div>
+
+            <!-- 错误提示 -->
+            <div v-if="reviewError" class="error-state">
+                {{ reviewError }}
+            </div>
+
+            <!-- 待审核活动列表 -->
+            <template v-if="!reviewLoading && !reviewError">
+                <div class="review-header">
+                    <div class="header-content">
+                        <div class="title-section">
+                            <h3>待审核活动列表</h3>
+                            <div class="stats-badge">
+                                <span class="count">{{ pendingActivities.length }}</span>
+                                <span class="label">待审核</span>
+                            </div>
+                        </div>
+                        <button @click="fetchPendingActivities" class="refresh-btn">
+                            <span class="refresh-icon">🔄</span>
+                            刷新
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pending-activities-table activities-table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>标题</th>
+                            <th>组织者</th>
+                            <th>分类</th>
+                            <th>城市</th>
+                            <th>开始时间</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="activity in pendingActivities" :key="activity.id">
+                            <td><span class="id-badge">{{ activity.id }}</span></td>
+                            <td class="title-cell">
+                                <div class="activity-title">{{ activity.title }}</div>
+                            </td>
+                            <td class="organizer-cell">
+                                <div class="organizer-info">
+                                    <span class="organizer-name">{{ activity.organizer }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="category-tag">{{ getCategoryName(activity.categoryId) }}</span>
+                            </td>
+                            <td>
+                                <span class="city-tag">{{ getCityName(activity.cityId) }}</span>
+                            </td>
+                            <td class="time-cell">{{ formatDateTime(activity.beginTime) }}</td>
+                            <td class="time-cell">{{ formatDateTime(activity.createdAt) }}</td>
+                            <td>
+                                <div class="review-actions">
+                                    <button @click="viewActivityDetail(activity)" class="view-btn" title="查看详情">
+                                        <span class="btn-icon">👁️</span>
+                                        查看
+                                    </button>
+                                    <button @click="approve(activity.id)" class="approve-btn" title="通过审核">
+                                        <span class="btn-icon">✅</span>
+                                        通过
+                                    </button>
+                                    <button @click="reject(activity.id)" class="reject-btn" title="拒绝审核">
+                                        <span class="btn-icon">❌</span>
+                                        拒绝
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- 空状态 -->
+                    <div v-if="pendingActivities.length === 0" class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <div class="empty-text">暂无待审核的活动</div>
+                        <div class="empty-subtext">所有活动都已审核完成</div>
+                    </div>
+                </div>
+
+                <!-- 分页 -->
+                <div class="pagination" v-if="reviewPagination.total > 0">
+                    <button 
+                        @click="changeReviewPage(reviewPagination.current - 1)" 
+                        :disabled="reviewPagination.current <= 1"
+                        class="page-btn"
+                    >
+                        上一页
+                    </button>
+                    <span class="page-info">
+                        第 {{ reviewPagination.current }} 页，共 {{ Math.ceil(reviewPagination.total / reviewPagination.pageSize) }} 页
+                    </span>
+                    <button 
+                        @click="changeReviewPage(reviewPagination.current + 1)" 
+                        :disabled="reviewPagination.current >= Math.ceil(reviewPagination.total / reviewPagination.pageSize)"
+                        class="page-btn"
+                    >
+                        下一页
+                    </button>
+                </div>
+            </template>
+        </div>
+        
+        <!-- 活动详情查看模态框 -->
+        <div v-if="showDetailModal" class="modal review-modal" @click="showDetailModal = false">
+            <div class="modal-content review-detail-modal" @click.stop>
+                <div class="modal-header">
+                    <div class="header-info">
+                        <h3>📋 活动详情审核</h3>
+                        <div class="activity-id-badge">ID: {{ viewingActivity.id }}</div>
+                    </div>
+                    <button @click="showDetailModal = false" class="close-btn">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-grid">
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <span class="card-icon">📝</span>
+                                <h4>基本信息</h4>
+                            </div>
+                            <div class="detail-item">
+                                <label>活动标题:</label>
+                                <span class="value-text">{{ viewingActivity.title }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>组织者:</label>
+                                <span class="value-text organizer-name">{{ viewingActivity.organizer }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>活动分类:</label>
+                                <span class="category-badge">{{ getCategoryName(viewingActivity.categoryId) }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>活动城市:</label>
+                                <span class="city-badge">{{ getCityName(viewingActivity.cityId) }}</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <span class="card-icon">📍</span>
+                                <h4>时间地点</h4>
+                            </div>
+                            <div class="detail-item">
+                                <label>活动地址:</label>
+                                <span class="value-text address-text">{{ viewingActivity.address }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>开始时间:</label>
+                                <span class="value-text time-text">{{ formatDateTime(viewingActivity.beginTime) }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>结束时间:</label>
+                                <span class="value-text time-text">{{ formatDateTime(viewingActivity.endTime) }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>人数限制:</label>
+                                <span class="value-text participant-count">{{ viewingActivity.leastJoinNum }} - {{ viewingActivity.mostJoinNum }}人</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-card full-width">
+                            <div class="card-header">
+                                <span class="card-icon">📄</span>
+                                <h4>活动内容</h4>
+                            </div>
+                            <div class="content-section">
+                                <div class="content-text">{{ viewingActivity.content }}</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card full-width" v-if="viewingActivity.images && viewingActivity.images.length > 0">
+                            <div class="card-header">
+                                <span class="card-icon">🖼️</span>
+                                <h4>活动图片</h4>
+                                <span class="image-count">({{ viewingActivity.images.length }}张)</span>
+                            </div>
+                            <div class="images-gallery">
+                                <div v-for="(image, index) in viewingActivity.images" :key="index" class="image-item">
+                                    <img :src="image" :alt="`活动图片 ${index + 1}`" class="activity-image" @click="previewImage(image)">
+                                    <div class="image-overlay">
+                                        <span class="preview-text">点击预览</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer review-footer">
+                    <div class="footer-actions">
+                        <button @click="approve(viewingActivity.id)" class="approve-btn action-btn">
+                            <span class="btn-icon">✅</span>
+                            <span class="btn-text">通过审核</span>
+                        </button>
+                        <button @click="reject(viewingActivity.id)" class="reject-btn action-btn">
+                            <span class="btn-icon">❌</span>
+                            <span class="btn-text">拒绝审核</span>
+                        </button>
+                        <button @click="showDetailModal = false" class="close-btn action-btn">
+                            <span class="btn-icon">🚪</span>
+                            <span class="btn-text">关闭</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import {ref, computed, onMounted} from 'vue'
-import {getAllActivities, updateActivityStatus, updateActivityInfo} from '@/api/adminAPI'
+import {
+    getAllActivities,
+    updateActivityStatus,
+    updateActivityInfo,
+    getPendingActivities,
+    rejectActivity,
+    approveActivity
+} from '@/api/adminAPI'
 import {useActivityStore} from '@/store/activityStore'
 import ImgUploader from '@/components/ImgUploader/ImgUploader.vue'
 
 const activityStore = useActivityStore()
 
+// 当前标签页
+const currentTab = ref('management')
+
 // 活动数据
 const activities = ref([])
 const loading = ref(false)
 const error = ref(null)
+
+// 活动审核相关数据
+const pendingActivities = ref([])
+const reviewLoading = ref(false)
+const reviewError = ref(null)
+const reviewPagination = ref({
+    current: 1,
+    pageSize: 10,
+    total: 0
+})
+
+// 活动详情查看
+const showDetailModal = ref(false)
+const viewingActivity = ref({})
 
 // 从 store 获取城市和类别数据
 const cities = computed(() => activityStore.cityList)
@@ -392,9 +647,6 @@ const fetchActivities = async () => {
         const data = await getAllActivities()
         activities.value = data.map(activity => ({
             ...activity,
-            // 确保 startTime 和 endTime 字段存在，如果后端直接返回 beginTime/endTime, 则无需此映射
-            // startTime: activity.beginTime,
-            // endTime: activity.endTime
         }));
     } catch (err) {
         error.value = '获取活动列表失败：' + (err.message || '未知错误')
@@ -689,14 +941,109 @@ const previewImage = (url) => {
     }
 }
 
+// 获取待审核活动列表
+const fetchPendingActivities = async () => {
+    try {
+        reviewLoading.value = true
+        reviewError.value = null
+        
+        const response = await getPendingActivities({
+            page: reviewPagination.value.current,
+            pageSize: reviewPagination.value.pageSize
+        })
+        if (response && response.records) {
+            pendingActivities.value = response.records
+            reviewPagination.value.total = response.total
+        }
+    } catch (error) {
+        console.error('获取待审核活动失败:', error)
+        reviewError.value = '获取待审核活动失败'
+        uni.showToast({
+            title: '获取待审核活动失败',
+            icon: 'none'
+        })
+    } finally {
+        reviewLoading.value = false
+    }
+}
+
+// 查看活动详情
+const viewActivityDetail = (activity) => {
+    viewingActivity.value = activity
+    showDetailModal.value = true
+}
+
+// 审核活动 - 通过
+const approve = async (activityId) => {
+    try {
+        uni.showModal({
+            title: '确认操作',
+            content: '确定要通过这个活动吗？',
+            success: async (res) => {
+                if (res.confirm) {
+                    const response = await approveActivity(activityId)
+                    if (response) {
+                        uni.showToast({
+                            title: '活动已通过审核',
+                            icon: 'success'
+                        })
+                        await fetchPendingActivities()
+                        showDetailModal.value = false
+                    }
+                }
+            }
+        })
+    } catch (error) {
+        console.error('审核活动失败:', error)
+        uni.showToast({
+            title: '审核失败',
+            icon: 'none'
+        })
+    }
+}
+
+// 审核活动 - 拒绝
+const reject = async (activityId) => {
+    try {
+        uni.showModal({
+            title: '确认操作',
+            content: '确定要拒绝这个活动吗？',
+            success: async (res) => {
+                if (res.confirm) {
+                    const response = await rejectActivity(activityId)
+                    if (response) {
+                        uni.showToast({
+                            title: '活动已被拒绝',
+                            icon: 'success'
+                        })
+                        await fetchPendingActivities()
+                        showDetailModal.value = false
+                    }
+                }
+            }
+        })
+    } catch (error) {
+        console.error('审核活动失败:', error)
+        uni.showToast({
+            title: '审核失败',
+            icon: 'none'
+        })
+    }
+}
+
+// 审核分页变化
+const onReviewPageChange = (page) => {
+    reviewPagination.value.current = page
+    fetchPendingActivities()
+}
+
 // 在组件挂载时获取数据
 onMounted(async () => {
-    // activityStore 应该已经在 main.js 或类似入口文件中初始化并获取了初始数据
-    // 如果 cityList 和 categoryList 是异步加载的，确保它们在 fetchActivities 之前完成
-    // await activityStore.fetchInitialData(); // 假设 store 有这样的方法
     await fetchActivities()
-    // 移除 fetchCities 和 fetchCategories 的调用，因为数据来自 store
+    await fetchPendingActivities()
 })
+
+
 </script>
 
 <style scoped>
@@ -705,6 +1052,46 @@ onMounted(async () => {
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     padding: 24px;
+}
+
+/* Tab导航样式 */
+.tab-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.tab-item {
+    flex: 1;
+    max-width: 200px;
+    padding: 12px 24px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+.tab-item:hover {
+    color: #1890ff;
+    background-color: rgba(24, 144, 255, 0.1);
+}
+
+.tab-item.active {
+    color: #1890ff;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
 }
 
 .action-bar {
@@ -893,6 +1280,22 @@ onMounted(async () => {
     z-index: 1000;
 }
 
+/* 审核模态框特殊样式 */
+.review-modal {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+}
+
+.review-detail-modal {
+    max-width: 1000px;
+    width: 95%;
+    max-height: 90vh;
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    border: 2px solid rgba(99, 102, 241, 0.1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
 /* 确保uni组件的层级高于模态框 */
 :deep(.uni-modal) {
     z-index: 2000 !important;
@@ -922,6 +1325,38 @@ onMounted(async () => {
     margin-bottom: 20px;
 }
 
+.review-detail-modal .modal-header {
+    padding: 25px 30px 20px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px 20px 0 0;
+    margin-bottom: 0;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-info h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.activity-id-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .modal-header h3 {
     margin: 0;
     font-size: 18px;
@@ -931,6 +1366,207 @@ onMounted(async () => {
     font-size: 24px;
     cursor: pointer;
     color: #aaa;
+}
+
+.review-detail-modal .close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.review-detail-modal .close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* 详情网格布局 */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 25px;
+}
+
+.detail-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    transition: all 0.3s ease;
+}
+
+.detail-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.detail-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.card-icon {
+    font-size: 1.2rem;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.image-count {
+    margin-left: auto;
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.detail-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 12px;
+}
+
+.detail-item label {
+    font-weight: 600;
+    color: #64748b;
+    min-width: 80px;
+    font-size: 0.9rem;
+}
+
+.value-text {
+    color: #1e293b;
+    font-weight: 500;
+    flex: 1;
+}
+
+.organizer-name {
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+.category-badge, .city-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.city-badge {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    box-shadow: 0 2px 4px rgba(245, 87, 108, 0.3);
+}
+
+.address-text {
+    color: #059669;
+    font-weight: 500;
+}
+
+.time-text {
+    color: #dc2626;
+    font-weight: 500;
+}
+
+.participant-count {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.content-section {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 4px solid #3b82f6;
+}
+
+.content-text {
+    line-height: 1.6;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+/* 图片画廊样式 */
+.images-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.image-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.image-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.activity-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.image-item:hover .image-overlay {
+    opacity: 1;
+}
+
+.preview-text {
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
 }
 
 .modal-body .activity-detail-item {
@@ -965,6 +1601,75 @@ onMounted(async () => {
     margin-top: 20px;
     padding-top: 10px;
     border-top: 1px solid #e8e8e8;
+}
+
+/* 审核页脚样式 */
+.review-footer {
+    background: #f8fafc;
+    border-top: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 0 0 20px 20px;
+    padding: 20px 30px;
+    margin-top: 0;
+}
+
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.approve-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.approve-btn:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.reject-btn {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.reject-btn:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.action-btn.close-btn {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    color: white;
+}
+
+.action-btn.close-btn:hover {
+    background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+}
+
+.btn-icon {
+    font-size: 1rem;
+}
+
+.btn-text {
+    font-weight: 600;
 }
 
 .modal-footer button {
@@ -1037,6 +1742,122 @@ textarea.form-control {
 
 .edit-btn:hover {
     background-color: #73d13d;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .activities-management {
+        padding: 10px;
+    }
+
+    .tab-navigation {
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .tab-item {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .action-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .filters {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .activities-table {
+        font-size: 0.8rem;
+    }
+
+    .activities-table th,
+    .activities-table td {
+        padding: 8px 4px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .action-buttons button {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+        max-height: 90vh;
+    }
+
+    .edit-modal .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    /* 审核模态框响应式 */
+    .review-detail-modal {
+        width: 98%;
+        max-height: 95vh;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .detail-card {
+        padding: 15px;
+    }
+
+    .card-header h4 {
+        font-size: 1rem;
+    }
+
+    .detail-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .detail-item label {
+        min-width: auto;
+        font-size: 0.85rem;
+    }
+
+    .images-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+
+    .footer-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .action-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .header-info {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .header-info h3 {
+        font-size: 1.2rem;
+    }
 }
 </style>
 <!-- #endif -->

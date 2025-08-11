@@ -54,12 +54,12 @@
                 </view>
 
                 <!-- 微信登录按钮 -->
-                <view class="wx-login-btn" @click="handleWxLogin">
-                    <view class="wx-icon-wrapper">
-                        <image class="wx-icon" src="/static/images/wechat.png" mode="aspectFit"></image>
-                    </view>
-                    <text class="wx-text">微信登录</text>
-                </view>
+<!--                <view class="wx-login-btn" @click="handleWxLogin">-->
+<!--                    <view class="wx-icon-wrapper">-->
+<!--                        <image class="wx-icon" src="/static/images/wechat.png" mode="aspectFit"></image>-->
+<!--                    </view>-->
+<!--                    <text class="wx-text">微信登录</text>-->
+<!--                </view>-->
             </view>
 
             <view class="register-link">
@@ -92,93 +92,6 @@ const goToRegister = () => {
     uni.navigateTo({
         url: '/pages/Register/Register'
     });
-};
-
-// 微信登录处理
-const handleWxLogin = () => {
-    // #ifdef MP-WEIXIN
-    // 直接获取用户信息，必须在用户点击事件中调用
-    uni.getUserProfile({
-        desc: '用于完善用户资料', // 声明获取用户个人信息后的用途
-        success: (profileRes) => {
-            const userInfo = profileRes.userInfo;
-            
-            uni.showLoading({
-                title: '登录中...'
-            });
-            
-            // 获取用户信息成功后，再获取微信登录凭证
-            uni.login({
-                provider: 'weixin',
-                success: async (loginRes) => {
-                    if (loginRes.code) {
-                        try {
-                            // 调用后端接口进行登录验证，同时传递用户信息
-                            const res = await wxLogin({
-                                code: loginRes.code,
-                                userInfo
-                            });
-
-                            uni.hideLoading();
-
-                            if (res?.code === 200) {
-                                console.log('微信登录返回数据:', res.data);
-                                
-                                uni.showToast({
-                                    title: '登录成功',
-                                    icon: 'success',
-                                    duration: 2000
-                                });
-
-                                // 登录成功后跳转到首页
-                                setTimeout(() => {
-                                    uni.switchTab({
-                                        url: '/pages/Home/Home'
-                                    });
-                                }, 2000);
-                            }
-                        } catch (error) {
-                            uni.hideLoading();
-                            uni.showToast({
-                                title: '微信登录失败',
-                                icon: 'none'
-                            });
-                            console.error('微信登录失败:', error);
-                        }
-                    } else {
-                        uni.hideLoading();
-                        uni.showToast({
-                            title: '微信登录授权失败',
-                            icon: 'none'
-                        });
-                    }
-                },
-                fail: (err) => {
-                    uni.hideLoading();
-                    uni.showToast({
-                        title: '微信登录失败',
-                        icon: 'none'
-                    });
-                    console.error('微信登录失败:', err);
-                }
-            });
-        },
-        fail: (err) => {
-            uni.showToast({
-                title: '用户拒绝了授权',
-                icon: 'none'
-            });
-            console.error('获取用户信息失败:', err);
-        }
-    });
-    // #endif
-
-    // #ifndef MP-WEIXIN
-    uni.showToast({
-        title: '请在微信小程序中使用微信登录',
-        icon: 'none'
-    });
-    // #endif
 };
 
 // 提交登录

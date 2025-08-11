@@ -15,7 +15,7 @@
             <div class="action-bar">
                 <div class="search-box">
                     <input type="text" v-model="searchTerm" placeholder="搜索用户...">
-                    <button @click="searchUsers">搜索</button>
+                    <button @click="searchUsers" size="mini" style="height: 95%">搜索</button>
                 </div>
                 <div class="filters">
                     <select v-model="statusFilter">
@@ -52,7 +52,7 @@
                         </td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.phone }}</td>
-                        <td>{{ user.role === 1 ? '管理员' : '普通用户' }}</td>
+                        <td>{{ getRoleText(user.role) }}</td>
                         <td>
                 <span class="status-badge"
                       :class="user.status === 'online' ? 'active' : (user.status === 'offline' ? 'inactive' : 'banned')">
@@ -112,7 +112,7 @@
                         <strong>手机号:</strong> {{ currentUser.phone }}
                     </div>
                     <div class="user-detail-item">
-                        <strong>角色:</strong> {{ currentUser.role === 1 ? '管理员' : '普通用户' }}
+                        <strong>角色:</strong> {{ getRoleText(currentUser.role) }}
                     </div>
                     <div class="user-detail-item">
                         <strong>状态:</strong> {{ getStatusText(currentUser.status) }}
@@ -175,6 +175,18 @@
                                 <option value="banned">已禁用</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="editRole">用户身份:</label>
+                            <select
+                                id="editRole"
+                                v-model="editingUser.role"
+                                class="form-control"
+                            >
+                                <option value="0">普通用户</option>
+                                <option value="1">管理员</option>
+                                <option value="2">维修员</option>
+                            </select>
+                        </div>
                         <div class="form-group password-group">
                             <label for="editPassword">重置密码 (留空则不修改):</label>
                             <div class="password-input-container">
@@ -206,6 +218,7 @@
 import {ref, computed, onMounted} from 'vue'
 import {getAllUsers, updateUser} from '@/api/adminAPI'
 import {imgBaseUrl} from '@/util/basic-data.js'
+import {encrypt} from "@/util";
 
 // 用户数据
 const users = ref([])
@@ -311,6 +324,20 @@ const getStatusText = (status) => {
     }
 }
 
+// 获取角色文本
+const getRoleText = (role) => {
+    switch (role) {
+        case 0:
+            return '普通用户'
+        case 1:
+            return '管理员'
+        case 2:
+            return '维修员'
+        default:
+            return '未知'
+    }
+}
+
 // 查看用户详情
 const viewUser = (user) => {
     currentUser.value = {...user}
@@ -336,16 +363,17 @@ const saveUserEdit = async () => {
         }
 
         const payload = {
-            id: editingUser.value.id,
+            account: editingUser.value.account,
             username: editingUser.value.username,
             email: editingUser.value.email,
             phone: editingUser.value.phone,
-            status: editingUser.value.status === 'online' ? 1 : (editingUser.value.status === 'offline' ? 2 : 0), // 转换回数字状态
-        }
-        if (editingUser.value.newPassword) {
-            payload.password = editingUser.value.newPassword
+            status: editingUser.value.status,
+            role: parseInt(editingUser.value.role) // 添加角色信息
         }
 
+        if (editingUser.value.newPassword) {
+            payload.password = encrypt(editingUser.value.newPassword)
+        }
         const result = await updateUser(payload)
         if (result) {
             uni.showToast({

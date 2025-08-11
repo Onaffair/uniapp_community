@@ -6,7 +6,7 @@ export * from './basic-data'
 export * from './ChatFormat'
 export * from './crypto'
 export * from './showMessages'
-export  * from '/request'
+export  * from './request'
 export * from './_oss'
 export * from './webSocketUtils'
 

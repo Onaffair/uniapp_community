@@ -69,6 +69,14 @@
                 <text class="cell-title">系统消息</text>
                 <text class="iconfont icon-arrow-right"></text>
             </view>
+            <view class="cell" @tap="navigateTo('/pages/PersonalCenter/UserRepair')">
+                <text class="cell-title"> 报修 </text>
+                <text class="iconfont icon-arrow-right"></text>
+            </view>
+            <view class="cell" @tap="navigateTo('/pages/PersonalCenter/TechnicianTasks')" v-if="userStore.getUser().role === 2">
+                <text class="cell-title"> 我是维修员 </text>
+                <text class="iconfont icon-arrow-right"></text>
+            </view>
             <view class="cell" @tap="navigateTo('/pages/admin/Index')" v-if="userStore.getUser().role === 1">
                 <text class="cell-title"> 我是管理员 </text>
                 <text class="iconfont icon-arrow-right"></text>

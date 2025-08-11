@@ -111,13 +111,12 @@ const goToDetail = () => {
 
 <style lang="scss">
 .activity-card {
-    margin: 20rpx;
+    padding: 24rpx;
     border-radius: 16rpx;
     overflow: hidden;
     box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
     background-color: #fff;
     display: flex;
-    padding: 20rpx;
 
     &-thumb {
         width: 180rpx;

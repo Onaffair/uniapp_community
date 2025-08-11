@@ -41,6 +41,7 @@ export const postLoginInfo = async (data) => {
                 title: res?.data?.msg,
                 icon: 'none'
             });
+            return res?.data;
         }
         
         const userStore = useUserStore();
@@ -504,6 +505,40 @@ export const submitReport = async (data) => {
         return res?.data;
     } catch (e) {
         alertFail(submitReport.name, e?.message);
+    }
+};
+
+// ==================== 公告相关接口 ====================
+
+/**
+ * 用户获取公告列表
+ * @param {Object} params - 查询参数
+ * @param {number} params.page - 页码
+ * @param {number} params.size - 每页数量
+ * @returns {Promise} - 返回公告列表
+ */
+export const getAnnouncements = async (params = { page: 1, size: 10 }) => {
+    try {
+        let res = await request.get('/user/announcements', { params });
+        return res?.data;
+    } catch (e) {
+        console.error('getAnnouncements error:', e);
+        throw e;
+    }
+};
+
+/**
+ * 用户获取公告详情
+ * @param {string} announcementId - 公告ID
+ * @returns {Promise} - 返回公告详情
+ */
+export const getAnnouncementDetail = async (announcementId) => {
+    try {
+        let res = await request.get(`/user/announcements/${announcementId}`);
+        return res?.data;
+    } catch (e) {
+        console.error('getAnnouncementDetail error:', e);
+        throw e;
     }
 };
 

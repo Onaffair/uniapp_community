@@ -212,7 +212,7 @@ const goToCreateActivity = () => {
 
 .activity-container {
     padding: 0;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);

@@ -4,7 +4,7 @@
             <image :src="message.role === 'user' ? userAvatar : '/static/ai-avatar.png'" class="avatar"/>
             <text class="role-name">{{ message.role === 'user' ? '我' : 'AI助手' }}</text>
             <view v-if="message.role === 'system'" class="copy-btn">
-                <uni-icons type="copy" size="22" color="#888">复制</uni-icons>
+                <uni-icons type="copy" size="22" color="#888" @click="copyContent">复制</uni-icons>
             </view>
         </view>
         <view class="message-content">
@@ -16,10 +16,9 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
 import {marked} from 'marked'
 import DOMPurify from 'dompurify'
-// import uniCopy from 'uni-copy'
+
 const props = defineProps({
     message: Object,
     userAvatar: String,
@@ -29,12 +28,26 @@ const parseMarkdown = (content) => {
     if (!content) return ''
     return DOMPurify.sanitize(marked.parse(content))
 }
-// const copyContent = () => {
-//   uniCopy({
-//     content: props.message.content,
-//     success: () => uni.showToast({ title: '已复制', icon: 'success' })
-//   })
-// }
+const copyContent = async () => {
+    const msgContent = props.message?.content.replace(/\*/g, '')
+
+    uni.setClipboardData({
+        data: msgContent,
+        success: () => {
+            uni.showToast({
+                title:'复制成功',
+                icon: 'success'
+            })
+        },
+        fail: () => {
+            uni.showToast({
+                title:'复制失败',
+                icon: 'none'
+            })
+        },
+    })
+
+}
 </script>
 
 <style scoped>

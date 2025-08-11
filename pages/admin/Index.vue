@@ -27,6 +27,9 @@
                 </keep-alive>
             </div>
         </div>
+        <div class="footer">
+            <a href="https://beian.miit.gov.cn/" target="_blank">ICP备案：湘ICP备2025131765号-1</a>
+        </div>
     </div>
 </template>
 
@@ -40,6 +43,8 @@ import Users from './Users.vue'
 import Activities from './Activities.vue'
 import Groups from './Groups.vue'
 import ReportManagePage from './ReportManagePage.vue'
+import RepairManagement from './RepairManagement.vue'
+import Announcements from './Announcements.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -50,7 +55,9 @@ const menuItems = [
     { name: '用户管理', component: 'Users' },
     { name: '活动管理', component: 'Activities' },
     { name: '群组管理', component: 'Groups' },
-    { name: '举报管理', component: 'ReportManagePage' }
+    { name: '举报管理', component: 'ReportManagePage' },
+    { name: '维修管理', component: 'RepairManagement' },
+    { name: '公告管理', component: 'Announcements' }
 ]
 
 // 当前显示的组件
@@ -62,7 +69,9 @@ const switchPage = (component) => {
                             component === 'Users' ? Users :
                             component === 'Activities' ? Activities :
                             component === 'Groups' ? Groups :
-                            component === 'ReportManagePage' ? ReportManagePage : null
+                            component === 'ReportManagePage' ? ReportManagePage :
+                            component === 'RepairManagement' ? RepairManagement :
+                            component === 'Announcements' ? Announcements : null
 }
 
 // 退出登录
@@ -80,11 +89,14 @@ const handleLogout = async () => {
 <style lang="scss">
 .admin-layout {
     display: flex;
-    min-height: 100vh;
+    flex-direction: column;
 }
 
 .sidebar {
+    position: fixed;
+
     width: 200px;
+    height: 100%;
     background-color: #001529;
     color: white;
     padding: 20px 0;
@@ -117,6 +129,7 @@ const handleLogout = async () => {
 }
 
 .main-content {
+    margin-left: 200px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -158,5 +171,17 @@ const handleLogout = async () => {
     background-color: #f0f2f5;
     overflow-y: auto;
 }
+.footer {
+    height: 60px;
+    background-color: #f0f2f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #666;
+    border-top: 1px solid #e8e8e8;
+}
+
 </style>
+
 <!-- #endif -->

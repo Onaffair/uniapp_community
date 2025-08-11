@@ -111,7 +111,8 @@ export class OSSUploader{
 
             const targetFile = file
             const ext = file.name?.split('.')?.pop() || file.path?.split('.')?.pop() || 'jpg';
-            const fileName = `${dir}${crypto.randomUUID()}.${ext}`
+            const randomName = this.generateUUID()
+            const fileName = `${dir}${randomName}.${ext}`
             const res = await this.client.put(fileName,targetFile,{
                 headers:{
                     'x-oss-object-acl': 'public-read'
@@ -124,6 +125,14 @@ export class OSSUploader{
         }catch (e){
             alertFail(this.upload.name,e.message)
         }
+    }
+    generateUUID() {
+        // 返回一个 RFC4122 version 4 UUID
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0
+            const v = c === 'x' ? r : (r & 0x3 | 0x8)
+            return v.toString(16)
+        })
     }
 
 }

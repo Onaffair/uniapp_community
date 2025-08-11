@@ -47,13 +47,13 @@
                         :is-preview="false"
                     >
                         <template #button>
-                            <view class="upload-icon">
+                            <view class="up load-icon">
                                 <text class="icon">📷</text>
                             </view>
                         </template>
                     </ImgUploader>
                 </view>
-                
+
                 <view class="input-section">
                     <input
                         class="message-input"
@@ -63,7 +63,7 @@
                         @confirm="sendMessage"
                     />
                 </view>
-                
+
                 <button class="send-button" @tap="sendMessage">发送</button>
             </view>
         </view>

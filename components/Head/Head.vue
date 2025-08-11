@@ -25,7 +25,8 @@ const props = defineProps({
 });
 
 const goBackDo = () => {
-    uni.navigateBack();
+
+    uni.navigateBack()
 };
 </script>
 

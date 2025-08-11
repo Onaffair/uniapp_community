@@ -3,22 +3,6 @@ import request from '../util/request';
 import { useUserStore } from '../store/userStore';
 import { alertFail } from '../util/showMessages';
 
-/**
- * 创建群组
- * @param {Object} activity - 活动数据
- * @returns {Promise} - 返回创建结果
- */
-export const createGroup = async (activity) => {
-    try {
-        let res = await request.post('/group/create-group', activity);
-        console.log("creatGroup", res?.data);
-        const userStore = useUserStore();
-        userStore.getGroup().push((res?.data?.data));
-        return res?.data;
-    } catch (e) {
-        alertFail(createGroup.name, e?.message);
-    }
-};
 
 /**
  * 获取我的群组

@@ -5,6 +5,14 @@ import { ref, computed } from 'vue'
 export const useActivityStore = defineStore('activityForm', () => {
     const activityStatusList = [
         {
+            id: -1,
+            name: "已拒绝"
+        },
+        {
+            id: 0,
+            name: "待审核"
+        },
+        {
             id: 1,
             name: "等待报名"
         },

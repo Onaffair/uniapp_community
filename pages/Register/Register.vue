@@ -1,25 +1,21 @@
 <template>
+
+    <Head :go-back="true" head-title="注册"/>
     <view class="register-container">
         <!-- 自定义导航栏 -->
-        <view class="custom-navbar">
-            <view class="navbar-left" @tap="goBack">
-                <text class="iconfont icon-arrow-left"></text>
-            </view>
-            <view class="navbar-title">注册</view>
-        </view>
-
         <form @submit="onSubmit" class="register-form">
             <!-- 头像 -->
             <view class="form-item">
                 <view class="form-label">头像</view>
                 <view class="form-input">
-                    <img-uploader
-                        v-model="formData.avatar"
-                        :max-count="1"
-                        :is-preview="true"
-                        :img-style="{width: '140rpx', height: '140rpx', borderRadius: '50%'}"
-                    >
-                    </img-uploader>
+                    <text>注册后可上传头像</text>
+<!--                    <img-uploader-->
+<!--                        v-model="formData.avatar"-->
+<!--                        :max-count="1"-->
+<!--                        :is-preview="true"-->
+<!--                        :img-style="{width: '140rpx', height: '140rpx', borderRadius: '50%'}"-->
+<!--                    >-->
+<!--                    </img-uploader>-->
                 </view>
             </view>
 

@@ -25,7 +25,7 @@
                     >
                 </div>
                 <div class="error-message" v-if="error">{{ error }}</div>
-                <button type="submit" :disabled="loading">
+                <button @click="handleLogin" :disabled="loading">
                     {{ loading ? '登录中...' : '登录' }}
                 </button>
             </form>
@@ -36,9 +36,8 @@
 <script setup>
 import { ref } from 'vue'
 import { postLoginInfo } from '@/api/userAPI'
-import { useRouter } from 'vue-router'
+import {encrypt} from "@/util";
 
-const router = useRouter()
 const loading = ref(false)
 const error = ref('')
 
@@ -50,12 +49,17 @@ const loginForm = ref({
 const handleLogin = async () => {
     loading.value = true
     error.value = ''
-    
+
     try {
-        const res = await postLoginInfo(loginForm.value)
+        const res = await postLoginInfo({
+            account:loginForm.value.account,
+            password:encrypt(loginForm.value.password)
+        })
         if (res?.code === 200) {
             // 登录成功，跳转到管理后台首页
-            router.push('/admin')
+            uni.navigateTo({
+                url:'/pages/admin/Index'
+            })
         } else {
             error.value = res?.msg || '登录失败'
         }

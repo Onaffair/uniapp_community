@@ -1,7 +1,5 @@
 <template>
     <view class="report-manage">
-        <!-- 顶部导航 -->
-        <Head title="举报管理" :go-back="true" />
         
         <!-- 筛选条件 -->
         <view class="filter-section">

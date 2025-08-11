@@ -20,18 +20,17 @@
                         <input
                             class="form-input"
                             type="text"
-                            v-model="localForm.displayAddress"
+                            v-model="localForm.address"
                             placeholder="请输入详细地址"
-                            disabled
                         />
                     </view>
                 </uni-forms-item>
                 
                 <!-- 添加地图选择按钮 -->
-                <view class="map-select-btn" @click="chooseLocationFromMap">
+<!--                <view class="map-select-btn" @click="chooseLocationFromMap" >
                     <uni-icons type="map" size="20"></uni-icons>
                     <text class="btn-text">{{ localForm.displayAddress ? '重新选择位置' : '从地图选择位置' }}</text>
-                </view>
+                </view> -->
                 
                 <!-- 显示已选择的位置状态，但不直接显示经纬度 -->
                 <view v-if="locationInfo.latitude" class="location-status">
@@ -169,6 +168,7 @@ const confirmCitySelect = () => {
 
 // 从地图选择位置
 const chooseLocationFromMap = () => {
+	uni.location
     uni.chooseLocation({
         success: (res) => {
             console.log('选择位置成功:', res);
@@ -206,21 +206,30 @@ const validateForm = () => {
         return false;
     }
 
-    if (!localForm.value.displayAddress?.trim()) {
-        uni.showToast({
-            title: "请从地图选择位置",
-            icon: "none"
-        });
-        return false;
-    }
+    // if (!localForm.value.displayAddress?.trim()) {
+    //     uni.showToast({
+    //         title: "请从地图选择位置",
+    //         icon: "none"
+    //     });
+    //     return false;
+    // }
+	if (!localForm.value.address?.trim()){
+		uni.showToast({
+		    title: "请输入详细地址",
+		    icon: "none"
+		});
+		return false;
+	}
+	
+	
     
-    if (!locationInfo.value.latitude || !locationInfo.value.longitude) {
-        uni.showToast({
-            title: "请从地图选择有效位置",
-            icon: "none"
-        });
-        return false;
-    }
+    // if (!locationInfo.value.latitude || !locationInfo.value.longitude) {
+    //     uni.showToast({
+    //         title: "请从地图选择有效位置",
+    //         icon: "none"
+    //     });
+    //     return false;
+    // }
 
     return true;
 };

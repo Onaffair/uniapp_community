@@ -8,9 +8,9 @@
       }
     },
     {
-      "path": "pages/Index/Index",
+      "path": "pages/Announcement/AnnouncementList",
       "style": {
-        "navigationBarTitleText": "首页",
+        "navigationBarTitleText": "公告列表",
         "navigationStyle": "custom"
       }
     },
@@ -136,7 +136,7 @@
     {
       "path": "pages/admin/Index",
       "style": {
-        "navigationBarTitleText": "管理后台",
+        "navigationBarTitleText": "管理员",
         "navigationStyle": "custom"
       }
     },
@@ -158,6 +158,27 @@
       "path": "pages/admin/ReportDetailPage",
       "style": {
         "navigationBarTitleText": "举报详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/admin/RepairManagement",
+      "style": {
+        "navigationBarTitleText": "维修管理",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/PersonalCenter/UserRepair",
+      "style": {
+        "navigationBarTitleText": "家电维修",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/PersonalCenter/TechnicianTasks",
+      "style": {
+        "navigationBarTitleText": "维修任务",
         "navigationStyle": "custom"
       }
     }

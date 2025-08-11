@@ -1,6 +1,5 @@
 <template>
     <view class="chat-list">
-        
         <!-- 搜索框 -->
         <view class="search-box">
             <input
@@ -144,7 +143,7 @@ import {onShow} from '@dcloudio/uni-app'
 const userStore = useUserStore();
 
 const searchQuery = ref('');
-const activeSections = ref(['friends', 'groups']); // 默认展开好友和群组
+const activeSections = ref(['friends']); // 默认展开好友和群组
 
 // 页面显示时获取数据
 onShow(() => {
