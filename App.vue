@@ -22,8 +22,8 @@ onLaunch(() =>{
                     .then(res => {
                         userStore.setUser(res?.data);
                     });
-
                 ws = useWebSocketStore();
+                ws.initWebSocket()
             })
     }
 })

@@ -2,9 +2,9 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { useUserStore } from './userStore'
-import { wsUrl } from '../util/basic-data'
+import { wsUrl } from '@/util'
 import WebSocketUtils from '../util/webSocketUtils'
-import { getFriend } from '../api/userAPI'
+import {MessageDispatcher} from "@/util/messageDispatcher";
 
 export const useWebSocketStore = defineStore('websocket', () => {
     // 状态
@@ -16,6 +16,8 @@ export const useWebSocketStore = defineStore('websocket', () => {
     const reconnectAttempts = ref(0)
     const maxReconnectAttempts = 5
     const reconnectDelay = 3000 // 3秒重连间隔
+    const dispatcher = new MessageDispatcher(userStore)
+
 
     // 初始化WebSocket连接
     const initWebSocket = () => {
@@ -73,102 +75,10 @@ export const useWebSocketStore = defineStore('websocket', () => {
 
         // 接收消息事件
         wsInstance.value.setOnMessageCallback(async (data) => {
-            try {
-                // 解析消息
-                const parsedData = JSON.parse(data)
-                console.log('收到WebSocket消息:', parsedData)
-                
-                // 处理好友消息
-                if (parsedData.hasOwnProperty('friendMessageId')) {
-                    await handleFriendMessage(parsedData)
-                } 
-                // 处理好友请求
-                else if (parsedData.hasOwnProperty('friendRequestId')) {
-                    handleFriendRequest(parsedData)
-                } 
-                // 处理群聊消息
-                else if (parsedData.hasOwnProperty('groupMessageId')) {
-                    handleGroupMessage(parsedData)
-                }
-            } catch (error) {
-                console.error('消息解析失败:', error)
-            }
+            dispatcher.dispatch(data)
         })
     }
 
-    // 处理好友消息
-    const handleFriendMessage = async (messageData) => {
-        // 查找好友
-        let friend = userStore.getFriend().find(item => 
-            item.account === messageData.sender || 
-            item.account === messageData.receiver
-        )
-        
-        // 如果好友不存在，重新获取好友列表
-        if (!friend) {
-            try {
-                // 使用API获取最新好友列表
-                const response = await getFriend()
-                if (response && response.code === 200) {
-                    // 更新好友列表后再次查找
-                    friend = userStore.getFriend().find(item => 
-                        item.account === messageData.sender || 
-                        item.account === messageData.receiver
-                    )
-                }
-            } catch (error) {
-                console.error('获取好友列表失败:', error)
-            }
-            
-            // 如果仍找不到好友，放弃处理该消息
-            if (!friend) {
-                console.warn('找不到消息对应的好友:', messageData)
-                return
-            }
-        }
-        
-        // 确保chat数组存在
-        if (!friend.chat) friend.chat = []
-        
-        // 添加消息到聊天记录
-        friend.chat.push(messageData)
-    }
-
-    // 处理好友请求
-    const handleFriendRequest = (requestData) => {
-        const systemInfo = userStore.getSystemInfo()
-        if (!systemInfo) return
-        
-        systemInfo.push(requestData)
-        
-        // 可以添加通知提示
-        uni.showToast({
-            title: '收到新的好友请求',
-            icon: 'none'
-        })
-    }
-
-    // 处理群聊消息
-    const handleGroupMessage = (messageData) => {
-        const groups = userStore.getGroup()
-        if (!groups) return
-        
-        // 查找对应群组
-        const group = groups.find(item => 
-            item.group.groupId === messageData.groupId
-        )
-        
-        if (!group) {
-            console.warn('找不到消息对应的群组:', messageData)
-            return
-        }
-        
-        // 确保chat数组存在
-        if (!group.chat) group.chat = []
-        
-        // 添加消息到聊天记录
-        group.chat.push(messageData)
-    }
 
     // 处理连接失败或断开
     const handleConnectionFailure = () => {

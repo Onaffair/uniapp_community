@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import {computed, onBeforeMount, onUnmounted, ref, watch} from 'vue';
+import {computed, onUnmounted, ref, onActivated, onMounted} from 'vue';
 import {getActivityList, getTopActivity} from "@/api/activityAPI";
 import {getAnnouncements} from "@/api/userAPI";
 import {useUserStore} from "@/store/userStore";
@@ -204,7 +204,7 @@ const loadAnnouncements = async () => {
     }
 };
 
-onBeforeMount(() => {
+onMounted(() => {
     getTopActivity(topNum)
         .then(res => {
             if (res && res.data) {
@@ -215,6 +215,20 @@ onBeforeMount(() => {
     // 加载公告
     loadAnnouncements();
 });
+
+onActivated(() =>{
+    getTopActivity(topNum)
+        .then(res => {
+            if (res && res.data) {
+                topActivities.value = res.data;
+            }
+        });
+
+    // 加载公告
+    loadAnnouncements();
+})
+
+
 
 // 组件卸载时清理定时器
 onUnmounted(() => {
