@@ -42,10 +42,10 @@
         <scroll-view
             scroll-y="true"
             class="content-scroll"
-            :refresher-enabled="false"
             :refresher-triggered="isLoading"
             @refresherrefresh="onRefresh"
             @scrolltolower="loadMore"
+            :refresher-enabled="false"
         >
             <!-- 轮播 -->
             <swiper class="swiper" indicator-dots autoplay circular>
@@ -136,6 +136,7 @@ const activities = getActivityList(selectedCategory, page, searchText);
 const onRefresh = () => {
     isLoading.value = true;
     page.value = 1;
+    isLoading.value = false;
     uni.showToast({
         title: '刷新成功',
         icon: 'success',
