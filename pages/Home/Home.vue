@@ -11,7 +11,7 @@
         </view>
 
         <!-- 分类标签 -->
-        <scroll-view scroll-x="true"  enable-flex="true" class="category-tabs" :show-scrollbar="false">
+        <scroll-view scroll-x="true" enable-flex="true" class="category-tabs" :show-scrollbar="false">
             <view
                 v-for="category in categories"
                 :key="category.id"
@@ -116,7 +116,7 @@ const currentAnnouncementText = computed(() => {
 // 开始公告轮播
 const startAnnouncementCarousel = () => {
     if (announcements.value.length <= 1) return;
-    
+
     announcementTimer.value = setInterval(() => {
         currentAnnouncementIndex.value = (currentAnnouncementIndex.value + 1) % announcements.value.length;
     }, 3000); // 每3秒切换一次
@@ -161,7 +161,7 @@ const formatTime = (timeStr) => {
     const now = new Date();
     const diff = now - date;
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+
     if (days === 0) {
         return '今天';
     } else if (days === 1) {
@@ -192,7 +192,7 @@ const goToAnnouncementList = () => {
 // 加载公告数据
 const loadAnnouncements = async () => {
     try {
-        const res = await getAnnouncements({ page: 1, size: 5 });
+        const res = await getAnnouncements({page: 1, size: 5});
         if (res && res.data && res.data.records) {
             announcements.value = res.data.records;
             // 加载完成后启动轮播
@@ -212,12 +212,12 @@ onMounted(() => {
                 topActivities.value = res.data;
             }
         });
-    
+
     // 加载公告
     loadAnnouncements();
 });
 
-onActivated(() =>{
+onActivated(() => {
     getTopActivity(topNum)
         .then(res => {
             if (res && res.data) {
@@ -228,7 +228,6 @@ onActivated(() =>{
     // 加载公告
     loadAnnouncements();
 })
-
 
 
 // 组件卸载时清理定时器
@@ -315,7 +314,6 @@ onUnmounted(() => {
     height: 100%;
     border-radius: 16rpx;
 }
-
 
 
 .empty-hint {

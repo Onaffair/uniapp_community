@@ -17,9 +17,9 @@
             :enable-back-to-top="true"
             id="chat-scroll"
         >
-            <view class="loading-more" v-if="isLoadingMore">
-                <text>加载更多消息...</text>
-            </view>
+<!--            <view class="loading-more" v-if="isLoadingMore">-->
+<!--                <text>加载更多消息...</text>-->
+<!--            </view>-->
 
             <chat-message
                 v-for="message in chatMessages"
@@ -237,7 +237,7 @@ watch(showGroupInfo, (newVal) => {
 onMounted(() => {
     setTimeout(() => {
         scrollToBottom();
-    }, 300);
+    }, 0);
 });
 
 // 滚动到底部
@@ -249,15 +249,6 @@ const scrollToBottom = () => {
         scrollToView.value = `msg-${lastMessage.groupMessageId}`;
     }
 
-    // 备用方法：直接设置scrollTop
-    nextTick(() => {
-        const query = uni.createSelectorQuery().in(this);
-        query.select('#chat-scroll').boundingClientRect(data => {
-            if (data) {
-                scrollTop.value = data.height * 2; // 滚动到足够大的位置确保到底部
-            }
-        }).exec();
-    });
 };
 
 // 加载更多消息（上拉时触发）

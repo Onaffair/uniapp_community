@@ -129,7 +129,7 @@
     {
       "path": "pages/Chat/AIChat",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "AI智能对话",
         "enablePullDownRefresh": false
       }
     },
@@ -216,6 +216,7 @@
     "navigationBarTitleText": "活动管理",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
+
   },
   "uniIdRouter": {}
 }

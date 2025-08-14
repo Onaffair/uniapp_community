@@ -11,7 +11,6 @@
             @scrolltoupper="loadMoreMessages"
             :scroll-into-view="scrollToView"
             :enable-back-to-top="true"
-
             id="chat-scroll"
         >
             <view class="loading-more" v-if="isLoadingMore">
@@ -28,7 +27,7 @@
                 :is-me="message.sender === myAccount"
                 :image-url="message.imageUrl"
                 :account="message.sender"
-                :id="`msg-${message.messageId}`"
+                :id="`msg-${message.friendMessageId}`"
             />
         </scroll-view>
         <!-- 输入框区域 -->
@@ -118,7 +117,7 @@ const currentChat = computed(() => {
 onMounted(() => {
     setTimeout(() => {
         scrollToBottom();
-    }, 300);
+    }, 0);
 });
 
 
@@ -128,18 +127,9 @@ const scrollToBottom = () => {
     const messages = currentChat.value.chat;
     if (messages && messages.length > 0) {
         const lastMessage = messages[messages.length - 1];
-        scrollToView.value = `msg-${lastMessage.messageId}`;
+        scrollToView.value = `msg-${lastMessage.friendMessageId}`;
     }
 
-    // 备用方法：直接设置scrollTop
-    nextTick(() => {
-        const query = uni.createSelectorQuery().in(this);
-        query.select('#chat-scroll').boundingClientRect(data => {
-            if (data) {
-                scrollTop.value = data.height * 10000; // 滚动到足够大的位置确保到底部
-            }
-        }).exec();
-    });
 };
 
 // 加载更多消息（上拉时触发）
