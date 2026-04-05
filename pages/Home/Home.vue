@@ -215,6 +215,23 @@ onMounted(() => {
 
     // 加载公告
     loadAnnouncements();
+
+    let lastClick = localStorage.getItem('lastClick') || 0;
+    const oneDay = 24 * 60 * 60 * 1000;
+    // if (!lastClick || new Date().getTime() - parseInt(lastClick) >= oneDay){
+    //     uni.showModal({
+    //         title:'欢迎来到Onaffair的个人网站',
+    //         content:'本网站只作为个人项目，请注意不要在网站填写自己的真实信息。',
+    //         confirmText:"好的",
+    //         success:(res) =>{
+    //             if (res.confirm){
+    //                 localStorage.setItem('lastClick',new Date().getTime().toString())
+    //             }
+    //         },
+    //         showCancel:false
+    //     })
+    // }
+
 });
 
 onActivated(() => {

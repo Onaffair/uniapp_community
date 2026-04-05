@@ -519,7 +519,7 @@ export const submitReport = async (data) => {
  */
 export const getAnnouncements = async (params = { page: 1, size: 10 }) => {
     try {
-        let res = await request.get('/user/announcements', { params });
+        let res = await request.get('/user/public/announcements', { params });
         return res?.data;
     } catch (e) {
         console.error('getAnnouncements error:', e);
@@ -534,7 +534,7 @@ export const getAnnouncements = async (params = { page: 1, size: 10 }) => {
  */
 export const getAnnouncementDetail = async (announcementId) => {
     try {
-        let res = await request.get(`/user/announcements/${announcementId}`);
+        let res = await request.get(`/user/public/announcements/${announcementId}`);
         return res?.data;
     } catch (e) {
         console.error('getAnnouncementDetail error:', e);

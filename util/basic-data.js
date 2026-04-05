@@ -5,8 +5,8 @@
 const baseUrl = "onaffair.website"
 const localUrl = "localhost"
 
-const wsUrl = `ws://${baseUrl}:9000/ws`
-const backUrl = `http://${baseUrl}:721/api`
+const wsUrl = `ws://${localUrl}:9000/ws`
+const backUrl = `http://${localUrl}:721/api`
 const imgBaseUrl = ``
 
 export {

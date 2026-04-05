@@ -260,6 +260,7 @@ const submitData = async () => {
                 title: '发布成功，请等待审核',
                 icon: 'success'
             });
+            activityStore.formData = {};
             uni.navigateBack();
         }
     } catch (error) {

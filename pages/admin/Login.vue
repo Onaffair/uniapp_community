@@ -145,4 +145,9 @@ button:disabled {
     text-align: center;
 }
 </style>
-<!-- #endif --> 
+<!-- #endif -->
+<!-- #ifndef H5 -->
+<template>
+    <view>该页面仅在H5环境下可用</view>
+</template>
+<!-- #endif -->

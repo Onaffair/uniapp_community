@@ -510,3 +510,4 @@ onMounted(() => {
     cursor: not-allowed;
 }
 </style>
+

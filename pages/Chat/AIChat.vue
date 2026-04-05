@@ -83,6 +83,12 @@
                     </view>
                     <scroll-view scroll-y class="activity-list">
                         <view
+                            class="activity-item"
+                            @click="selectActivity(null)"
+                        >
+                            <text>不关联活动</text>
+                        </view>
+                        <view
                             v-for="activity in activities"
                             :key="activity.id"
                             class="activity-item"
@@ -155,8 +161,9 @@ const parseMarkdown = (content) => {
 };
 
 const selectedActivity = computed(() =>{
-    if (!chatRequest.activityId) return "选择活动"
-    return activities.find(activity => activity.id === chatRequest.activityId).title
+    if (!chatRequest.activityId) return "不关联活动"
+    const activity = activities.find(activity => activity.id === chatRequest.activityId)
+    return activity ? activity.title : "不关联活动"
 })
 
 const selectedActivityTitle = computed(() => {

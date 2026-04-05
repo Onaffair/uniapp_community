@@ -63,28 +63,24 @@ const copyContent = async () => {
     box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     overflow: hidden;
+}
 
-    &.user {
-        .message-header {
-            background-color: #e8f4ff;
-            background-image: linear-gradient(to right, #e8f4ff, #f0f8ff);
-        }
+.message-bubble.user .message-header {
+    background-color: #e8f4ff;
+    background-image: linear-gradient(to right, #e8f4ff, #f0f8ff);
+}
 
-        .message-content {
-            border-left: 4rpx solid #1890ff;
-        }
-    }
+.message-bubble.user .message-content {
+    border-left: 4rpx solid #1890ff;
+}
 
-    &.system {
-        .message-header {
-            background-color: #f0f9eb;
-            background-image: linear-gradient(to right, #f0f9eb, #f6ffed);
-        }
+.message-bubble.system .message-header {
+    background-color: #f0f9eb;
+    background-image: linear-gradient(to right, #f0f9eb, #f6ffed);
+}
 
-        .message-content {
-            border-left: 4rpx solid #52c41a;
-        }
-    }
+.message-bubble.system .message-content {
+    border-left: 4rpx solid #52c41a;
 }
 
 .message-header {
@@ -123,40 +119,38 @@ const copyContent = async () => {
     font-size: 30rpx;
     line-height: 1.6;
     color: #333;
+}
 
-    .ai-response {
-        ::v-deep p {
-            margin-bottom: 24rpx;
-        }
+.message-content .ai-response ::v-deep p {
+    margin-bottom: 24rpx;
+}
 
-        ::v-deep strong {
-            font-weight: 600;
-            color: #222;
-        }
+.message-content .ai-response ::v-deep strong {
+    font-weight: 600;
+    color: #222;
+}
 
-        ::v-deep code {
-            background-color: #f5f5f5;
-            padding: 4rpx 8rpx;
-            border-radius: 4rpx;
-            font-family: monospace;
-            font-size: 28rpx;
-            color: #d56161;
-        }
+.message-content .ai-response ::v-deep code {
+    background-color: #f5f5f5;
+    padding: 4rpx 8rpx;
+    border-radius: 4rpx;
+    font-family: monospace;
+    font-size: 28rpx;
+    color: #d56161;
+}
 
-        ::v-deep pre {
-            background-color: #f8f8f8;
-            padding: 20rpx;
-            border-radius: 8rpx;
-            overflow-x: auto;
-            margin: 20rpx 0;
-        }
+.message-content .ai-response ::v-deep pre {
+    background-color: #f8f8f8;
+    padding: 20rpx;
+    border-radius: 8rpx;
+    overflow-x: auto;
+    margin: 20rpx 0;
+}
 
-        ::v-deep img {
-            width: 200rpx;
-            height: auto;
-            object-fit: fill;
-        }
-    }
+.message-content .ai-response ::v-deep img {
+    width: 200rpx;
+    height: auto;
+    object-fit: fill;
 }
 
 .message-divider {

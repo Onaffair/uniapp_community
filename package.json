@@ -1,4 +1,6 @@
 {
+  "name": "uni-app-project",
+  "version": "1.0.0",
   "dependencies": {
     "@dcloudio/uni-ui": "^1.5.7",
     "ali-oss": "^6.23.0",
